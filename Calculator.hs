@@ -35,5 +35,7 @@ tokenize s =
                 '+' : t ->  aux t (Plus : acc)
                 full@(h : t) | isDigit h -> 
                     parseNum full  >>= \(res, rem) -> aux rem (res : acc)
-                x -> let _ =  print x in Left "Ouch"
-    in aux (s |> filter (/= ' ')) [] >>= \(res, shouldBeEmpty) -> Right $ reverse res
+                x -> Left "Ouch"
+    in 
+        aux (s |> filter (/= ' ')) [] >>= 
+            \(res, shouldBeEmpty) -> Right $ reverse res
