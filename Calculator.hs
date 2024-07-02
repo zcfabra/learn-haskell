@@ -1,6 +1,7 @@
 module Calculator where
 import Data.Semigroup (Min(Min))
 import Data.Char (isDigit)
+import OUtils((|>))
 import Data.Monoid
 
 data Token = 
@@ -10,6 +11,7 @@ data Token =
     | Div
     | Mul 
     deriving (Show, Eq)
+
 parseNum :: String -> Either String (Token, String) 
 parseNum s = 
     let
@@ -34,4 +36,4 @@ tokenize s =
                 full@(h : t) | isDigit h -> 
                     parseNum full  >>= \(res, rem) -> aux rem (res : acc)
                 x -> let _ =  print x in Left "Ouch"
-    in aux s [] >>= \(res, shouldBeEmpty) -> Right $ reverse res
+    in aux (s |> filter (/= ' ')) [] >>= \(res, shouldBeEmpty) -> Right $ reverse res
